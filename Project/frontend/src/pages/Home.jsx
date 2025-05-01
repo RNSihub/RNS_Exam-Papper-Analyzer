@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/nav';
-import MainContent from '../syn/Main';
+// import MainContent from '../syn/Main';
 import Loading from '../components/loading'; // Import the Loading component
 
 export default function Dashboard() {
@@ -60,16 +60,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <MainContent
-        activeTab={activeTab}
-        generatedData={generatedData}
-        dataConfig={dataConfig}
-        isGenerating={isGenerating}
-        handleGenerate={handleGenerate}
-        handleClearData={handleClearData}
-        handleConfigChange={handleConfigChange}
-        handleExport={handleExport}
-      />
+      
     </div>
   );
 }
