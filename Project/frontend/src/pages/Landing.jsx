@@ -26,8 +26,8 @@ export default function LandingPage() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const videoRef = useRef(null);
 
-  const videoUrl = "https://www.youtube.com/embed/CEhVifRTPr0?autoplay=1";
-  const thumbnailUrl = "https://st.adda247.com/https://www.adda247.com/jobs/wp-content/uploads/sites/2/2022/08/05203544/How-To-Excel-In-An-Interview-1.png";
+  const videoUrl = "RNS Exam Paper Analyzer - Made with Clipchamp.mp4";
+  const thumbnailUrl = "Flux_Dev_Illustrate_a_vibrant_cartoonish_exam_paper_analyzer_i_3.jpg";
 
   // Handle scroll to top button visibility
   useEffect(() => {
@@ -293,7 +293,7 @@ export default function LandingPage() {
                       <img
                         src={thumbnailUrl}
                         alt="AssessEngine Demo Preview"
-                        className="w-full h-64 object-cover rounded-lg"
+                        className="w-full h-76 object-cover rounded-lg"
                       />
                       </div>
 
