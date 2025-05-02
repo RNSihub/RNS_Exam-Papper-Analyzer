@@ -27,7 +27,7 @@ export default function LandingPage() {
   const videoRef = useRef(null);
 
   const videoUrl = "RNS Exam Paper Analyzer - Made with Clipchamp.mp4";
-  const thumbnailUrl = "Flux_Dev_Illustrate_a_vibrant_cartoonish_exam_paper_analyzer_i_3.jpg";
+  const thumbnailUrl = "Exam_paper_Analyzer.png";
 
   // Handle scroll to top button visibility
   useEffect(() => {
@@ -293,7 +293,7 @@ export default function LandingPage() {
                       <img
                         src={thumbnailUrl}
                         alt="AssessEngine Demo Preview"
-                        className="w-full h-76 object-cover rounded-lg"
+                        className=" ml-12 w-150 h-95 object-cover rounded-lg"
                       />
                       </div>
 
@@ -472,14 +472,14 @@ export default function LandingPage() {
                   </button>
                 </div>
 
-                <div className="md:w-1/2">
+                <div className="md:w-2/6 ml-40">
                   <div className="bg-white rounded-xl shadow-lg overflow-hidden relative">
                     {!isPlaying ? (
                       <div className="relative group cursor-pointer" onClick={handleWatchDemo}>
                         <img
                           src={thumbnailUrl}
                           alt="AssessEngine Demo"
-                          className="w-full object-cover rounded-lg transform transition-transform duration-700 group-hover:scale-105"
+                          className="w-140 h-79 object-cover rounded-lg transform transition-transform duration-700 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <div className="bg-purple-600 bg-opacity-90 rounded-full w-20 h-20 flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110">
@@ -490,13 +490,13 @@ export default function LandingPage() {
                     ) : (
                       <iframe
                         ref={videoRef}
-                        width="560"
+                        width="460"
                         height="315"
                         src=""
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
-                        className="w-full aspect-video"
+                        className="w-140 h-79 aspect-video"
                         onEnded={handleVideoEnd}
                       />
                     )}
