@@ -6,7 +6,9 @@ import LandingPage from "./pages/Landing";// Correct the import statement
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import ForgotPassword from "./pages/forgot";
+import ExamAnalyzer from "./analyzer/ExamUpload";
 import { Toaster } from 'react-hot-toast';
+
 
 // Create auth context
 export const AuthContext = createContext(null);
@@ -30,6 +32,8 @@ function App() {
           <Route path="/register" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/home" element={<Home />} />
+          
+          <Route path="/exam-upload" element={<ExamAnalyzer />} />
         </Routes>
       </Router>
   );
