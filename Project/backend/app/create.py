@@ -121,6 +121,40 @@ def upload_exam_files(request, project_id):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
+@csrf_exempt
+def upload_exam_files(request):
+    """
+    Upload question paper and answer key, and return extracted text
+    """
+    if request.method == 'POST':
+        try:
+            if 'questionPaper' in request.FILES:
+                question_paper = request.FILES['questionPaper']
+                question_paper_path = os.path.join('media', 'question_papers', question_paper.name)
+                with open(question_paper_path, 'wb+') as destination:
+                    for chunk in question_paper.chunks():
+                        destination.write(chunk)
+                question_paper_text = extract_text_from_pdf(question_paper_path)
+
+            if 'answerKey' in request.FILES:
+                answer_key = request.FILES['answerKey']
+                answer_key_path = os.path.join('media', 'answer_keys', answer_key.name)
+                with open(answer_key_path, 'wb+') as destination:
+                    for chunk in answer_key.chunks():
+                        destination.write(chunk)
+                answer_key_text = extract_text_from_pdf(answer_key_path)
+
+            return JsonResponse({
+                'status': 'success',
+                'questionPaperText': question_paper_text,
+                'answerKeyText': answer_key_text
+            })
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
 def extract_text_from_pdf(pdf_path):
     """
     Extract text from PDF file
@@ -600,3 +634,165 @@ def download_sample_csv(request):
     writer.writerow(['Alex Johnson', 'R003'])
 
     return response
+
+def recent_projects(request):
+    """
+    Fetch recent projects
+    """
+    try:
+        projects = db.projects.find().sort('created_at', -1).limit(5)
+        project_list = [
+            {
+                'id': str(project['_id']),
+                'name': project['name'],
+                'teacher': project['teacher'],
+                'created_at': project['created_at']
+            }
+            for project in projects
+        ]
+        return JsonResponse({'status': 'success', 'projects': project_list})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    
+    
+    
+def extract_text_from_pdf(pdf_path):
+    """
+    Extract text from a PDF file.
+    """
+    text = ""
+    with open(pdf_path, 'rb') as file:
+        pdf_reader = PdfReader(file)
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+    return text
+
+@csrf_exempt
+def upload_exam_files(request):
+    """
+    Upload question paper and answer key, and return extracted text.
+    """
+    if request.method == 'POST':
+        try:
+            question_paper_text = ""
+            answer_key_text = ""
+
+            # Handle question paper upload
+            if 'questionPaper' in request.FILES:
+                question_paper = request.FILES['questionPaper']
+                question_paper_path = os.path.join('media', 'question_papers', question_paper.name)
+                os.makedirs(os.path.dirname(question_paper_path), exist_ok=True)
+                with open(question_paper_path, 'wb+') as destination:
+                    for chunk in question_paper.chunks():
+                        destination.write(chunk)
+                question_paper_text = extract_text_from_pdf(question_paper_path)
+
+            # Handle answer key upload
+            if 'answerKey' in request.FILES:
+                answer_key = request.FILES['answerKey']
+                answer_key_path = os.path.join('media', 'answer_keys', answer_key.name)
+                os.makedirs(os.path.dirname(answer_key_path), exist_ok=True)
+                with open(answer_key_path, 'wb+') as destination:
+                    for chunk in answer_key.chunks():
+                        destination.write(chunk)
+                if answer_key.name.endswith('.pdf'):
+                    answer_key_text = extract_text_from_pdf(answer_key_path)
+                else:
+                    with open(answer_key_path, 'r') as file:
+                        answer_key_text = file.read()
+
+            return JsonResponse({
+                'status': 'success',
+                'questionPaperText': question_paper_text,
+                'answerKeyText': answer_key_text
+            })
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+def recent_projects(request):
+    """
+    Fetch recent projects.
+    """
+    try:
+        projects = db.projects.find().sort('created_at', -1).limit(5)
+        project_list = [
+            {
+                'id': str(project['_id']),
+                'name': project['name'],
+                'teacher': project['teacher'],
+                'created_at': project['created_at']
+            }
+            for project in projects
+        ]
+        return JsonResponse({'status': 'success', 'projects': project_list})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    
+    
+@csrf_exempt
+def delete_project(request, project_id):
+    """
+    Delete a project by its ID.
+    """
+    if request.method == 'DELETE':
+        try:
+            # Find and delete the project
+            result = db.projects.delete_one({"_id": ObjectId(project_id)})
+            if result.deleted_count == 0:
+                return JsonResponse({'status': 'error', 'message': 'Project not found'}, status=404)
+
+            # Optionally, delete related data (e.g., students, reports)
+            db.students.delete_many({"project_id": ObjectId(project_id)})
+            db.test_reports.delete_one({"project_id": ObjectId(project_id)})
+
+            return JsonResponse({'status': 'success', 'message': 'Project deleted successfully'})
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+
+@csrf_exempt
+def get_project(request, project_id):
+    """
+    Get details of a specific project by its ID.
+    """
+    if request.method == 'GET':
+        try:
+            # Find the project by its ID
+            project = db.projects.find_one({"_id": ObjectId(project_id)})
+            if not project:
+                return JsonResponse({'status': 'error', 'message': 'Project not found'}, status=404)
+
+            # Fetch related students
+            students = list(db.students.find({"project_id": ObjectId(project_id)}))
+            for student in students:
+                student['_id'] = str(student['_id'])
+
+            # Prepare the project data
+            project_data = {
+                'id': str(project['_id']),
+                'name': project['name'],
+                'teacher': project['teacher'],
+                'created_at': project['created_at'],
+                'exam_date': project.get('exam_date'),
+                'description': project.get('description'),
+                'total_marks': project.get('total_marks'),
+                'passing_marks': project.get('passing_marks'),
+                'exam_duration': project.get('exam_duration'),
+                'exam_type': project.get('exam_type'),
+                'grade_scale': project.get('grade_scale', []),
+                'students': students,
+                'reports': project.get('reports', {})
+            }
+
+            return JsonResponse({'status': 'success', 'project': project_data})
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
