@@ -121,20 +121,24 @@ def upload_exam_files(request, project_id):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 
-@csrf_exempt
-def upload_exam_files(request):
+
+def upload_exam_files(request, project_id):
     """
-    Upload question paper and answer key, and return extracted text
+    Upload question paper and answer key
     """
     if request.method == 'POST':
         try:
+            project = db.projects.find_one({"_id": ObjectId(project_id)})
+            if not project:
+                return JsonResponse({'status': 'error', 'message': 'Project not found'}, status=404)
+
             if 'questionPaper' in request.FILES:
                 question_paper = request.FILES['questionPaper']
                 question_paper_path = os.path.join('media', 'question_papers', question_paper.name)
                 with open(question_paper_path, 'wb+') as destination:
                     for chunk in question_paper.chunks():
                         destination.write(chunk)
-                question_paper_text = extract_text_from_pdf(question_paper_path)
+                project['question_paper'] = question_paper_path
 
             if 'answerKey' in request.FILES:
                 answer_key = request.FILES['answerKey']
@@ -142,16 +146,35 @@ def upload_exam_files(request):
                 with open(answer_key_path, 'wb+') as destination:
                     for chunk in answer_key.chunks():
                         destination.write(chunk)
-                answer_key_text = extract_text_from_pdf(answer_key_path)
+                project['answer_key'] = answer_key_path
+
+            db.projects.update_one({"_id": ObjectId(project_id)}, {"$set": project})
+
+            # Extract text from question paper for later use
+            question_paper_text = extract_text_from_pdf(project['question_paper'])
+
+            # Extract answer key text
+            answer_key_text = ""
+            if project['answer_key'].endswith('.pdf'):
+                answer_key_text = extract_text_from_pdf(project['answer_key'])
+            else:
+                with open(project['answer_key'], 'r') as file:
+                    answer_key_text = file.read()
+
+            # Store extracted texts in session for later use
+            request.session['question_paper_text'] = question_paper_text
+            request.session['answer_key_text'] = answer_key_text
 
             return JsonResponse({
                 'status': 'success',
-                'questionPaperText': question_paper_text,
-                'answerKeyText': answer_key_text
+                'message': 'Files uploaded successfully'
             })
 
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=400)
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
 

@@ -17,7 +17,7 @@ urlpatterns = [
     #create
     path('', create.index, name='index'),
     path('api/teacher-details/', create.save_teacher_details, name='save_teacher_details'),
-    path('api/upload-exam-files/<str:project_id>/', create.upload_exam_files, name='upload_exam_files'),
+    path('api/upload-exam-files/', create.upload_exam_files, name='upload_exam_files'),
     path('api/import-students-csv/<str:project_id>/', create.import_students_csv, name='import_students_csv'),
     path('api/add-student/<str:project_id>/', create.add_student, name='add_student'),
     path('api/get-students/<str:project_id>/', create.get_students, name='get_students'),

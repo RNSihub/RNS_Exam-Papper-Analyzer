@@ -269,40 +269,41 @@ export default function ExamAnalyzer() {
     setLoading(true);
 
     if (type === 'questionPaper' || type === 'answerKey') {
-      const formData = new FormData();
-      formData.append(type, file);
+        const formData = new FormData();
+        formData.append(type, file);
 
-      try {
-        const response = await fetch(`http://127.0.0.1:8000/api/upload-exam-files/`, {
-          method: 'POST',
-          body: formData
-        });
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/upload-exam-files/`, {
+                method: 'POST',
+                body: formData
+            });
 
-        const data = await response.json();
-        if (response.ok) {
-          setExamDetails(prev => ({
-            ...prev,
-            [type]: file,
-            [`${type}Text`]: data[`${type}Text`]
-          }));
-          showNotification(`${type === 'questionPaper' ? 'Question Paper' : 'Answer Key'} uploaded successfully`, 'success');
-        } else {
-          showNotification(data.message, 'error');
+            const data = await response.json();
+            if (response.ok) {
+                setExamDetails(prev => ({
+                    ...prev,
+                    [type]: file,
+                    [`${type}Text`]: data[`${type}Text`]
+                }));
+                showNotification(`${type === 'questionPaper' ? 'Question Paper' : 'Answer Key'} uploaded successfully`, 'success');
+            } else {
+                showNotification(data.message, 'error');
+            }
+        } catch (error) {
+            showNotification('Error uploading file', 'error');
+        } finally {
+            setLoading(false);
         }
-      } catch (error) {
-        showNotification('Error uploading file', 'error');
-      } finally {
-        setLoading(false);
-      }
     } else if (type === 'studentBulk') {
-      // Process bulk student upload (CSV)
-      processBulkStudentUpload(file);
+        // Process bulk student upload (CSV)
+        processBulkStudentUpload(file);
     } else if (type.startsWith('student-')) {
-      // Process individual student answer sheet
-      const studentId = type.split('-')[1];
-      processStudentAnswerSheet(studentId, file);
+        // Process individual student answer sheet
+        const studentId = type.split('-')[1];
+        processStudentAnswerSheet(studentId, file);
     }
-  };
+};
+
 
   // Process bulk student upload
   const processBulkStudentUpload = async (file) => {
@@ -342,7 +343,7 @@ export default function ExamAnalyzer() {
     formData.append('answerSheet', file);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/upload-answer-sheet/${studentId}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/upload-student-answer-sheet/${studentId}/`, {
         method: 'POST',
         body: formData
       });
@@ -547,7 +548,7 @@ export default function ExamAnalyzer() {
       formData.append('gradeScale', JSON.stringify(examDetails.gradeScale));
 
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/upload-exam-files/${projectId}/`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/upload-exam-files/`, {
           method: 'POST',
           body: formData
         });
