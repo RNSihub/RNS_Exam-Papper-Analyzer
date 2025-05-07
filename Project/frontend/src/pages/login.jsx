@@ -17,7 +17,7 @@ const Login = () => {
   const particles = Array.from({ length: 20 }, (_, i) => (
     <div 
       key={i}
-      className="absolute rounded-full bg-purple-100 opacity-60 animate-float"
+      className="absolute rounded-full bg-yellow-100 opacity-60 animate-float"
       style={{
         width: `${Math.random() * 100 + 50}px`,
         height: `${Math.random() * 100 + 50}px`,
@@ -59,17 +59,17 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white overflow-hidden relative">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white overflow-hidden relative">
       {/* Animated background particles */}
       {particles}
       
       {/* Animated wave */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-indigo-500 opacity-20">
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-orange-400 opacity-20">
         <svg className="absolute bottom-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-          <path fill="#5D3FD3" fillOpacity="0.5" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,202.7C672,203,768,181,864,170.7C960,160,1056,160,1152,170.7C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+          <path fill="#2563EB" fillOpacity="0.5" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,202.7C672,203,768,181,864,170.7C960,160,1056,160,1152,170.7C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
         <svg className="absolute bottom-0 animate-pulse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-          <path fill="#FFAC3E" fillOpacity="0.3" d="M0,160L48,165.3C96,171,192,181,288,176C384,171,480,149,576,149.3C672,149,768,171,864,176C960,181,1056,171,1152,165.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+          <path fill="#F59E0B" fillOpacity="0.5" d="M0,160L48,165.3C96,171,192,181,288,176C384,171,480,149,576,149.3C672,149,768,171,864,176C960,181,1056,171,1152,165.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
       </div>
 
@@ -80,16 +80,16 @@ const Login = () => {
       >
         <div className="text-center">
           <div className="h-16 flex justify-center items-center mb-2">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-indigo-600 to-indigo-400 flex items-center justify-center animate-pulse">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 to-orange-400 flex items-center justify-center animate-pulse">
               <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
               </svg>
             </div>
           </div>
-          <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-400">
+          <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-orange-500">
             RNS AssessEngine
           </h2>
-          <p className="mt-2 text-sm text-indigo-500">Assessment Platform</p>
+          <p className="mt-2 text-sm text-yellow-600">Assessment Platform</p>
         </div>
         
         {errorMessage && (
@@ -108,7 +108,7 @@ const Login = () => {
             <div className="group">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                   </svg>
                 </div>
@@ -118,7 +118,7 @@ const Login = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-indigo-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-white/80 placeholder-indigo-300"
+                  className="block w-full pl-10 pr-3 py-3 border border-yellow-200 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-white/80 placeholder-yellow-400"
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -129,7 +129,7 @@ const Login = () => {
             <div className="group">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                   </svg>
                 </div>
@@ -139,7 +139,7 @@ const Login = () => {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-indigo-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 bg-white/80 placeholder-indigo-300"
+                  className="block w-full pl-10 pr-3 py-3 border border-yellow-200 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 bg-white/80 placeholder-yellow-400"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -154,15 +154,15 @@ const Login = () => {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-indigo-300 rounded transition-colors duration-300"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-yellow-300 rounded transition-colors duration-300"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-indigo-700">
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-blue-700">
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <Link to="/forgot-password" className="font-medium text-indigo-700 hover:text-indigo-900 transition-colors duration-300">
+              <Link to="/forgot-password" className="font-medium text-blue-700 hover:text-blue-900 transition-colors duration-300">
                 Forgot password?
               </Link>
             </div>
@@ -172,7 +172,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all duration-300 hover:scale-105 shadow-lg"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-orange-500 hover:from-blue-700 hover:to-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform transition-all duration-300 hover:scale-105 shadow-lg"
             >
               {isLoading ? (
                 <span className="flex items-center">
@@ -195,25 +195,25 @@ const Login = () => {
           
           <div className="flex items-center justify-center space-x-4 pt-4">
             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
-              <svg className="w-5 h-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-5 h-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
               </svg>
             </div>
             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
-              <svg className="w-5 h-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-5 h-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124-4.09-.193-7.715-2.157-10.141-5.126-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14-7.503 14-14s-.01-1.019-.034-1.519c.961-.689 1.8-1.56 2.46-2.548z" />
               </svg>
             </div>
             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
-              <svg className="w-5 h-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-5 h-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.917 16.083c-2.258 0-4.083-1.825-4.083-4.083s1.825-4.083 4.083-4.083c1.103 0 2.024.402 2.735 1.067l-1.107 1.068c-.304-.292-.834-.63-1.628-.63-1.394 0-2.531 1.155-2.531 2.579 0 1.424 1.138 2.579 2.531 2.579 1.616 0 2.224-1.162 2.316-1.762h-2.316v-1.4h3.855c.036.204.064.408.064.677.001 2.332-1.563 3.988-3.919 3.988zm9.917-3.5h-1.75v1.75h-1.167v-1.75h-1.75v-1.166h1.75v-1.75h1.167v1.75h1.75v1.166z" />
               </svg>
             </div>
           </div>
           
           <div className="text-center mt-4">
-            <span className="text-sm text-indigo-500">Need an AssessEngine account?</span>
-            <Link to="/register" className="ml-1 text-sm font-medium text-indigo-700 hover:text-indigo-900 transition-colors duration-300">
+            <span className="text-sm text-orange-500">Need an AssessEngine account?</span>
+            <Link to="/register" className="ml-1 text-sm font-medium text-blue-700 hover:text-blue-900 transition-colors duration-300">
               Register now
             </Link>
           </div>
