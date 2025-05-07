@@ -88,6 +88,17 @@ export default function ExamAnalyzer() {
     topPerformers: [],
     improvementAreas: []
   });
+  const [previewText, setPreviewText] = useState('');
+const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+const openPreview = (text) => {
+    setPreviewText(text);
+    setIsPreviewOpen(true);
+};
+
+const closePreview = () => {
+    setIsPreviewOpen(false);
+};
 
   // Fetch projects on component mount
   useEffect(() => {
@@ -263,6 +274,7 @@ export default function ExamAnalyzer() {
   };
 
   // Handle file upload
+  
   const handleFileUpload = async (file, type) => {
     if (!file) return;
 
@@ -273,7 +285,7 @@ export default function ExamAnalyzer() {
         formData.append(type, file);
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/upload-exam-files/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/upload-exam-files/${projectId}/`, {
                 method: 'POST',
                 body: formData
             });
@@ -287,10 +299,10 @@ export default function ExamAnalyzer() {
                 }));
                 showNotification(`${type === 'questionPaper' ? 'Question Paper' : 'Answer Key'} uploaded successfully`, 'success');
             } else {
-                showNotification(data.message, 'error');
+                showNotification(data.message || 'Failed to upload file', 'error');
             }
         } catch (error) {
-            showNotification('Error uploading file', 'error');
+            showNotification('Error uploading file: ' + error.message, 'error');
         } finally {
             setLoading(false);
         }
@@ -303,6 +315,8 @@ export default function ExamAnalyzer() {
         processStudentAnswerSheet(studentId, file);
     }
 };
+
+
 
 
   // Process bulk student upload
@@ -860,174 +874,95 @@ export default function ExamAnalyzer() {
             {/* Step 2: Question Paper & Answer Key */}
             {step === 2 && (
               <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <h2 className="text-xl font-bold mb-4 text-blue-800">Question Paper & Answer Key</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h2 className="text-xl font-bold mb-4 text-blue-800">Question Paper & Answer Key</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Question Paper Upload */}
                   <div className="border border-gray-200 rounded-lg p-4">
-                    <h3 className="text-lg font-semibold mb-3">Question Paper</h3>
-                    <div className={`border-2 border-dashed rounded-lg p-6 text-center ${
-                      examDetails.questionPaper ? 'border-green-300 bg-green-50' : 'border-gray-300 hover:border-blue-400'
-                    }`}>
-                      {!examDetails.questionPaper ? (
-                        <div className="space-y-2">
-                          <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                          <div className="text-gray-700">Drag and drop your question paper here or</div>
-                          <label className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-700 transition-colors">
-                            Browse Files
-                            <input
-                              type="file"
-                              className="hidden"
-                              accept=".pdf,.doc,.docx,.txt"
-                              onChange={(e) => handleFileUpload(e.target.files[0], 'questionPaper')}
-                            />
-                          </label>
-                          <div className="text-xs text-gray-500 mt-1">Supports: PDF, DOC, DOCX, TXT</div>
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
-                          <div className="font-medium text-green-700">Question Paper Uploaded</div>
-                          <div className="text-sm text-gray-600 truncate">{examDetails.questionPaper.name}</div>
-                          <button
-                            className="text-red-600 text-sm hover:text-red-800"
-                            onClick={() => setExamDetails({ ...examDetails, questionPaper: null, questionPaperText: '' })}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                      <h3 className="text-lg font-semibold mb-3">Question Paper</h3>
+                      <div className={`border-2 border-dashed rounded-lg p-6 text-center ${
+                          examDetails.questionPaper ? 'border-green-300 bg-green-50' : 'border-gray-300 hover:border-blue-400'
+                      }`}>
+                          {!examDetails.questionPaper ? (
+                              <div className="space-y-2">
+                                  <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                                  <div className="text-gray-700">Drag and drop your question paper here or</div>
+                                  <label className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-700 transition-colors">
+                                      Browse Files
+                                      <input
+                                          type="file"
+                                          className="hidden"
+                                          accept=".pdf,.doc,.docx,.txt"
+                                          onChange={(e) => handleFileUpload(e.target.files[0], 'questionPaper')}
+                                      />
+                                  </label>
+                                  <div className="text-xs text-gray-500 mt-1">Supports: PDF, DOC, DOCX, TXT</div>
+                              </div>
+                          ) : (
+                              <div className="space-y-2">
+                                  <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
+                                  <div className="font-medium text-green-700">Question Paper Uploaded</div>
+                                  <div className="text-sm text-gray-600 truncate">{examDetails.questionPaper.name}</div>
+                                  <button
+                                      className="text-red-600 text-sm hover:text-red-800"
+                                      onClick={() => setExamDetails({ ...examDetails, questionPaper: null, questionPaperText: '' })}
+                                  >
+                                      Remove
+                                  </button>
+                                  <button
+                                      className="text-blue-600 text-sm hover:text-blue-800"
+                                      onClick={() => openPreview(examDetails.questionPaperText)}
+                                  >
+                                      Preview
+                                  </button>
+                              </div>
+                          )}
+                      </div>
                   </div>
-
+          
                   {/* Answer Key Upload */}
                   <div className="border border-gray-200 rounded-lg p-4">
-                    <h3 className="text-lg font-semibold mb-3">Answer Key</h3>
-                    <div className={`border-2 border-dashed rounded-lg p-6 text-center ${
-                      examDetails.answerKey ? 'border-green-300 bg-green-50' : 'border-gray-300 hover:border-blue-400'
-                    }`}>
-                      {!examDetails.answerKey ? (
-                        <div className="space-y-2">
-                          <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                          <div className="text-gray-700">Drag and drop your answer key here or</div>
-                          <label className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-700 transition-colors">
-                            Browse Files
-                            <input
-                              type="file"
-                              className="hidden"
-                              accept=".pdf,.doc,.docx,.txt"
-                              onChange={(e) => handleFileUpload(e.target.files[0], 'answerKey')}
-                            />
-                          </label>
-                          <div className="text-xs text-gray-500 mt-1">Supports: PDF, DOC, DOCX, TXT</div>
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
-                          <div className="font-medium text-green-700">Answer Key Uploaded</div>
-                          <div className="text-sm text-gray-600 truncate">{examDetails.answerKey.name}</div>
-                          <button
-                            className="text-red-600 text-sm hover:text-red-800"
-                            onClick={() => setExamDetails({ ...examDetails, answerKey: null, answerKeyText: '' })}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                      <h3 className="text-lg font-semibold mb-3">Answer Key</h3>
+                      <div className={`border-2 border-dashed rounded-lg p-6 text-center ${
+                          examDetails.answerKey ? 'border-green-300 bg-green-50' : 'border-gray-300 hover:border-blue-400'
+                      }`}>
+                          {!examDetails.answerKey ? (
+                              <div className="space-y-2">
+                                  <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                                  <div className="text-gray-700">Drag and drop your answer key here or</div>
+                                  <label className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-700 transition-colors">
+                                      Browse Files
+                                      <input
+                                          type="file"
+                                          className="hidden"
+                                          accept=".pdf,.doc,.docx,.txt"
+                                          onChange={(e) => handleFileUpload(e.target.files[0], 'answerKey')}
+                                      />
+                                  </label>
+                                  <div className="text-xs text-gray-500 mt-1">Supports: PDF, DOC, DOCX, TXT</div>
+                              </div>
+                          ) : (
+                              <div className="space-y-2">
+                                  <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
+                                  <div className="font-medium text-green-700">Answer Key Uploaded</div>
+                                  <div className="text-sm text-gray-600 truncate">{examDetails.answerKey.name}</div>
+                                  <button
+                                      className="text-red-600 text-sm hover:text-red-800"
+                                      onClick={() => setExamDetails({ ...examDetails, answerKey: null, answerKeyText: '' })}
+                                  >
+                                      Remove
+                                  </button>
+                                  <button
+                                      className="text-blue-600 text-sm hover:text-blue-800"
+                                      onClick={() => openPreview(examDetails.answerKeyText)}
+                                  >
+                                      Preview
+                                  </button>
+                              </div>
+                          )}
+                      </div>
                   </div>
-                </div>
-
-                {/* Exam Settings */}
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-4">Exam Settings</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Total Marks</label>
-                      <input
-                        type="number"
-                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        value={examDetails.totalMarks}
-                        onChange={(e) => setExamDetails({ ...examDetails, totalMarks: parseInt(e.target.value) })}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Passing Marks</label>
-                      <input
-                        type="number"
-                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        value={examDetails.passingMarks}
-                        onChange={(e) => setExamDetails({ ...examDetails, passingMarks: parseInt(e.target.value) })}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Exam Duration (minutes)</label>
-                      <input
-                        type="number"
-                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        value={examDetails.examDuration}
-                        onChange={(e) => setExamDetails({ ...examDetails, examDuration: parseInt(e.target.value) })}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Exam Type</label>
-                    <select
-                      className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                      value={examDetails.examType}
-                      onChange={(e) => setExamDetails({ ...examDetails, examType: e.target.value })}
-                    >
-                      <option value="multiple-choice">Multiple Choice</option>
-                      <option value="written">Written</option>
-                      <option value="mixed">Mixed</option>
-                    </select>
-                  </div>
-
-                  <div className="mt-4">
-                    <h4 className="text-md font-medium text-gray-700 mb-2">Grade Scale</h4>
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                          <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Minimum Marks</th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {examDetails.gradeScale.map((grade, index) => (
-                            <tr key={index}>
-                              <td className="px-6 py-2 whitespace-nowrap">
-                                <input
-                                  type="text"
-                                  className="w-full p-1 border border-gray-300 rounded-md"
-                                  value={grade.grade}
-                                  onChange={(e) => {
-                                    const updatedScale = [...examDetails.gradeScale];
-                                    updatedScale[index].grade = e.target.value;
-                                    setExamDetails({ ...examDetails, gradeScale: updatedScale });
-                                  }}
-                                />
-                              </td>
-                              <td className="px-6 py-2 whitespace-nowrap">
-                                <input
-                                  type="number"
-                                  className="w-full p-1 border border-gray-300 rounded-md"
-                                  value={grade.minMarks}
-                                  onChange={(e) => {
-                                    const updatedScale = [...examDetails.gradeScale];
-                                    updatedScale[index].minMarks = parseInt(e.target.value);
-                                    setExamDetails({ ...examDetails, gradeScale: updatedScale });
-                                  }}
-                                />
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
               </div>
+          </div>
             )}
 
             {/* Step 3: Student Management */}
