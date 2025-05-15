@@ -14,7 +14,7 @@ import re
 
 # MongoDB connection
 client = MongoClient("mongodb+srv://sutgJxLaXWo7gKMR:sutgJxLaXWo7gKMR@cluster0.2ytii.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-db = client["Mech_GenAI"]
+db = client["RNS_Exam_Analyze"]
 users_collection = db["Users"]
 
 # SMTP settings
