@@ -7,6 +7,11 @@ import Login from "./pages/login";
 import Signup from "./pages/signup";
 import ForgotPassword from "./pages/forgot";
 import ExamAnalyzer from "./analyzer/ExamUpload";
+import TestSetup from "./MCQ_Analyzer/Mcq_details";
+
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+// import mcq_analyzer from "./MCQ_Analyzer/Mcq_details";
 import { Toaster } from 'react-hot-toast';
 
 
@@ -32,8 +37,24 @@ function App() {
           <Route path="/register" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/dashboard" element={<Home />} />
+
+          <Route path="/profile" element={<Profile />} />
+          
+          {/* Add other routes here */}
+          {/* Example: */}
+          {/* <Route path="/about" element={<About />} /> */}
+          {/* <Route path="/contact" element={<Contact />} /> */}
+          {/* <Route path="/exam-upload" element={<ExamUpload />} /> */}
           
           <Route path="/exam-upload" element={<ExamAnalyzer />} />
+          {/* <Route path="/mcq-analyzer" element={<TestSetup />} />
+
+          <Route path="/upload-questions" element={<QuestionUpload />} />
+          <Route path="/upload-answers" element={<StudentAnswerUpload />} />
+          <Route path="/results" element={<ResultAnalysis />} /> */}
+
+          
         </Routes>
       </Router>
   );

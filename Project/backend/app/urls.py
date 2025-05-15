@@ -30,5 +30,7 @@ urlpatterns = [
     path('api/projects/', create.recent_projects, name='get_recent_projects'),
     path('api/delete-project/<str:project_id>/', create.delete_project, name='delete_project'),
     path('api/projects/<str:project_id>/', create.get_project, name='get_project'),
-   
+ 
+ 
+    path('api/get-profile/', auth.get_profile, name='get_profile'),
 ]

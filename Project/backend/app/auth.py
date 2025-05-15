@@ -406,3 +406,31 @@ def change_password(request):
             return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
 
     return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+
+
+#--------------------------------------------------------------------Profile--------------------------------------
+
+@csrf_exempt
+def get_profile(request):
+    if request.method == 'GET':
+        try:
+            # Assuming the email is passed as a query parameter
+            email = request.GET.get('email')
+
+            if not email:
+                return JsonResponse({'message': 'Email is required'}, status=400)
+
+            # Find the user in the database
+            user = users_collection.find_one({'email': email}, {'_id': 0, 'password': 0})
+
+            if not user:
+                return JsonResponse({'message': 'User not found'}, status=404)
+
+            # Return the user profile data
+            return JsonResponse({'user': user}, status=200)
+
+        except Exception as e:
+            return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
+
+    return JsonResponse({'message': 'Method not allowed'}, status=405)
