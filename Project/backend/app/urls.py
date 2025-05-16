@@ -3,6 +3,8 @@ from . import views
 from . import auth
 from . import create
 from . import mcq
+from . import qa
+from . import Student
 
 urlpatterns = [
     
@@ -35,5 +37,10 @@ urlpatterns = [
  
     path('api/get-profile/', auth.get_profile, name='get_profile'),
     
-    path('api/submit/', mcq.submit_all_details, name='submit_all_details'),
+    path('api/mcq-submit/', mcq.submit_all_details, name='submit_all_details'),
+    path('api/qa-submit/', qa.submit_question_paper, name='submit_question_paper'),
+    
+    path('api/students/', Student.get_students, name='get_students'),
+    path('api/students/add/', Student.add_student, name='add_student'),
+    path('api/students/bulk/', Student.bulk_upload_students, name='bulk_upload_students'),
 ]

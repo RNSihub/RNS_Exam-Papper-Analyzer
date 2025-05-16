@@ -5,8 +5,6 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 from datetime import datetime
-import csv
-from io import StringIO
 import json
 
 # Load environment variables
@@ -15,27 +13,24 @@ load_dotenv()
 # Configure MongoDB
 client = MongoClient("mongodb+srv://sutgJxLaXWo7gKMR:sutgJxLaXWo7gKMR@cluster0.2ytii.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["RNS_Exam_Analyze"]
+
 # Define the collection name explicitly
-exam_projects_collection = db["exam_projects"]
+question_papers_collection = db["question_papers"]
 
 @csrf_exempt
 @api_view(['POST'])
-def submit_all_details(request):
+def submit_question_paper(request):
     try:
         # Extract data from request
         teacher_details = json.loads(request.data.get('teacherDetails', '{}'))
         subject_details = json.loads(request.data.get('subjectDetails', '{}'))
-        mcq_file = request.FILES.get('mcqFile')
+        questions = json.loads(request.data.get('questions', '[]'))
 
-        if not all([teacher_details, subject_details, mcq_file]):
-            return JsonResponse({"message": "Missing required data or file"}, status=400)
-
-        # Process the uploaded file
-        file_content = mcq_file.read().decode('utf-8')
-        questions = parse_csv(file_content)
+        if not all([teacher_details, subject_details, questions]):
+            return JsonResponse({"message": "Missing required data"}, status=400)
 
         # Create a structured document with only needed data
-        project_data = {
+        question_paper_data = {
             'teacher': {
                 'name': teacher_details.get('name'),
                 'email': teacher_details.get('email'),
@@ -50,20 +45,12 @@ def submit_all_details(request):
             },
             'questions': questions,
             'created_at': datetime.now().isoformat(),
-            'Type': 'MCQ'
-
+            'Type': 'Question_Paper'
         }
 
         # Insert the structured document into MongoDB
-        exam_projects_collection.insert_one(project_data)
+        question_papers_collection.insert_one(question_paper_data)
 
-        return JsonResponse({"message": "All details saved successfully!"}, status=201)
+        return JsonResponse({"message": "Question paper saved successfully!"}, status=201)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
-
-def parse_csv(file_content):
-    # Use csv module to parse the CSV content
-    csv_file = StringIO(file_content)
-    csv_reader = csv.DictReader(csv_file)
-    questions = [row for row in csv_reader]
-    return questions
