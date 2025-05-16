@@ -7,7 +7,7 @@ import Login from "./pages/login";
 import Signup from "./pages/signup";
 import ForgotPassword from "./pages/forgot";
 import ExamAnalyzer from "./analyzer/ExamUpload";
-import TestSetup from "./MCQ_Analyzer/Mcq_details";
+import MCQUploadSystem from "./MCQ_Analyzer/Mcq_details";
 
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
@@ -48,9 +48,9 @@ function App() {
           {/* <Route path="/exam-upload" element={<ExamUpload />} /> */}
           
           <Route path="/exam-upload" element={<ExamAnalyzer />} />
-          {/* <Route path="/mcq-analyzer" element={<TestSetup />} />
+          <Route path="/mcq-analyzer" element={<MCQUploadSystem />} />
 
-          <Route path="/upload-questions" element={<QuestionUpload />} />
+          {/* <Route path="/upload-questions" element={<QuestionUpload />} />
           <Route path="/upload-answers" element={<StudentAnswerUpload />} />
           <Route path="/results" element={<ResultAnalysis />} /> */}
 

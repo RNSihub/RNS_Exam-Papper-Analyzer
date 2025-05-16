@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from . import auth
 from . import create
+from . import mcq
 
 urlpatterns = [
     
@@ -33,4 +34,6 @@ urlpatterns = [
  
  
     path('api/get-profile/', auth.get_profile, name='get_profile'),
+    
+    path('api/submit/', mcq.submit_all_details, name='submit_all_details'),
 ]
